@@ -2,7 +2,9 @@
   "name": "ttabs",
   "version": "1.0.0",
   "description": "a vue tabs component",
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "main": "src/index.js",
   "scripts": {
     "dev": "vuepress dev docs",

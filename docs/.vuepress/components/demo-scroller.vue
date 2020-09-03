@@ -5,7 +5,7 @@
       :name="item.name" 
       :label="item.label" 
       :key="item.name">
-      <p>这是第{{item.index}}选项卡</p>
+      <p>这是第{{item.index || item.name}}选项卡</p>
     </t-tab-pane>
   </t-tabs>
 </template>
@@ -14,7 +14,7 @@
 export default {
   data () {
     return {
-      active: 'tab2',
+      active: 'Tab2',
       list1: []
     }
   },
@@ -22,8 +22,8 @@ export default {
     for (let i = 0; i < 20; i++) {
       this.list1.push({
         index: i + 1,
-        name: 'tab' + (i + 1),
-        label: 'tab' + (i + 1)
+        name: 'Tab' + (i + 1),
+        label: 'Tab' + (i + 1)
       })
     }
   }

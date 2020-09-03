@@ -2,7 +2,8 @@
 import { Sortable, Swap } from 'sortablejs/modular/sortable.core.esm'
 import { removeClass } from '../utils/dom'
 
-let relatedElement = null
+// let relatedElement = null
+let teleportDestinationVm = null
 
 // aop, override Swap drop method
 function SwapOverride () {
@@ -22,6 +23,10 @@ Sortable.mount(new SwapOverride())
 
 function computeVmIndex (vnodes, element) {
   return vnodes.map(elt => elt.elm).indexOf(element)
+}
+
+function isTransitionName (name) {
+  return ['transition-group', 'TransitionGroup'].includes(name)
 }
 
 const eventsListened = ['Start', 'Add', 'Remove', 'Update', 'End', 'Move']
@@ -52,7 +57,7 @@ const swapComponent = {
     return {
       $sortable: undefined,
       noneFunctionalComponentMode: false,
-      related: undefined
+      relatedElement: undefined
     }
   },
 
@@ -130,11 +135,34 @@ const swapComponent = {
       return { index, element }
     },
 
+    getUnderlyingPotencialDraggableComponent ({ __vue__: vue }) {
+      if (
+        !vue ||
+        !vue.$options ||
+        !isTransitionName(vue.$options._componentTag)
+      ) {
+        if (
+          !('realList' in vue) &&
+          vue.$children.length === 1 &&
+          'realList' in vue.$children[0]
+        ) { return vue.$children[0] }
+
+        return vue
+      }
+      return vue.$parent
+    },
+
     swapList (newIndex, oldIndex, element) {
       const list = [...this.value]
       const t = list[newIndex]
       list[newIndex] = list[oldIndex]
       list[oldIndex] = t
+      this.$emit('input', list)
+    },
+
+    spliceList () {
+      const list = [...this.value]
+      list.splice(...arguments)
       this.$emit('input', list)
     },
 
@@ -144,14 +172,22 @@ const swapComponent = {
     },
 
     onMove (evt) {
+      const { from, to } = evt
+
       if (evt.related) {
-        relatedElement = evt.related
+        this.relatedElement = evt.related
+      }
+
+      if (from !== to) {
+        teleportDestinationVm = this.getUnderlyingPotencialDraggableComponent(to)
+      } else {
+        teleportDestinationVm = null
       }
     },
 
     onLeave (evt) {
-      removeClass(relatedElement, this.$attrs.swapClass)
-      relatedElement = null
+      removeClass(this.relatedElement, this.$attrs.swapClass)
+      this.relatedElement = null
     },
 
     onEnd (evt) {
@@ -159,16 +195,32 @@ const swapComponent = {
       if (element === undefined) {
         return
       }
-      const oldIndex = computeVmIndex(this.getChildrenNodes(), evt.item)
-      const newIndex = computeVmIndex(this.getChildrenNodes(), evt.swapItem)
 
-      if (newIndex >= this.getChildrenNodes().length || newIndex < 0) {
+      const children = this.getChildrenNodes()
+      const oldIndex = computeVmIndex(children, evt.item)
+      const newIndex = computeVmIndex(children, evt.swapItem)
+
+      removeClass(this.relatedElement, this.$attrs.swapClass)
+
+      if (newIndex === -1) {
+        this.teleport(oldIndex, element)
         return
       }
-      if (relatedElement === evt.swapItem) {
-        removeClass(relatedElement, this.$attrs.swapClass)
+
+      // update position
+      if (this.relatedElement === evt.swapItem) {
         this.swapList(newIndex, oldIndex, element)
       }
+    },
+
+    teleport (oldIndex, element) {
+      if (!teleportDestinationVm) {
+        return
+      }
+
+      this.spliceList(oldIndex, 1)
+      const { index: newIndex } = teleportDestinationVm.getUnderlyingVm(this.relatedElement)
+      teleportDestinationVm.spliceList(newIndex, 0, element)
     }
   }
 }

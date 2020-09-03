@@ -29,19 +29,17 @@ export default {
   name: 'TTabs',
   components: { TTabNav, TSwapComponent },
   props: {
-    // nav位置
+
     tabPosition: {
       type: String,
       default: 'top'
     },
 
-    // 当前选中
     value: {
       type: String,
       default: ''
     },
 
-    // 绑定的数组
     list: {
       type: Array,
       default: () => ([])
@@ -73,7 +71,10 @@ export default {
             vnode.componentOptions.Ctor.options.name === 'TTabPane')
         // update indeed
         const panes = paneSlots.map(({ componentInstance }) => {
-          componentInstance.listItem = this.listMap[componentInstance.$options.propsData.name]
+          componentInstance.__listItem = this.listMap[componentInstance.$options.propsData.name] || {
+            name: componentInstance.name,
+            label: componentInstance.label
+          }
           return componentInstance
         })
         const panesChanged = !(panes.length === this.panes.length && panes.every((pane, index) => pane === this.panes[index]))
@@ -91,22 +92,14 @@ export default {
     tabChange (panes) {
       this.panes = panes
       const tabList = panes.map(pane => {
-        // 如果没有list则创建一个新的
-        if (!this.list || !this.list.length) {
-          return {
-            name: pane.name,
-            label: pane.label
-          }
+        if (
+          this.list &&
+          this.list.length &&
+          !(this.listMap && this.listMap[pane.name])
+        ) {
+          this.handleTabClick(pane, pane.name)
         }
-
-        // 更新顺序
-        if (this.listMap && this.listMap[pane.name]) {
-          return this.listMap[pane.name]
-        }
-
-        // 新增选项卡并选中
-        this.handleTabClick(pane, pane.name)
-        return pane.listItem
+        return pane.__listItem
       })
       this.$emit('update:list', tabList)
     }

@@ -31,6 +31,12 @@ export default {
   directives: {
     Mousewheel
   },
+  props: {
+    step: {
+      type: Number,
+      default: 30
+    }
+  },
   data () {
     return {
       scrollWidth: 17,
@@ -85,7 +91,7 @@ export default {
 
       const { wheelDelta } = e
       const { scrollLeft } = this.$refs.wrap
-      const px = 20 * wheelDelta / -120
+      const px = this.step * wheelDelta / -120
 
       let left = scrollLeft + px
 
