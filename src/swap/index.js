@@ -2,7 +2,7 @@
 import { Sortable, Swap } from 'sortablejs/modular/sortable.core.esm'
 import { removeClass } from '../utils/dom'
 
-// let relatedElement = null
+let relatedElement = null
 let teleportDestinationVm = null
 
 // aop, override Swap drop method
@@ -175,7 +175,7 @@ const swapComponent = {
       const { from, to } = evt
 
       if (evt.related) {
-        this.relatedElement = evt.related
+        relatedElement = evt.related
       }
 
       if (from !== to) {
@@ -186,8 +186,9 @@ const swapComponent = {
     },
 
     onLeave (evt) {
-      removeClass(this.relatedElement, this.$attrs.swapClass)
-      this.relatedElement = null
+      removeClass(relatedElement, this.$attrs.swapClass)
+      relatedElement = null
+      teleportDestinationVm = null
     },
 
     onEnd (evt) {
@@ -200,7 +201,7 @@ const swapComponent = {
       const oldIndex = computeVmIndex(children, evt.item)
       const newIndex = computeVmIndex(children, evt.swapItem)
 
-      removeClass(this.relatedElement, this.$attrs.swapClass)
+      removeClass(relatedElement, this.$attrs.swapClass)
 
       if (newIndex === -1) {
         this.teleport(oldIndex, element)
@@ -208,7 +209,7 @@ const swapComponent = {
       }
 
       // update position
-      if (this.relatedElement === evt.swapItem) {
+      if (relatedElement === evt.swapItem) {
         this.swapList(newIndex, oldIndex, element)
       }
     },
@@ -219,8 +220,10 @@ const swapComponent = {
       }
 
       this.spliceList(oldIndex, 1)
-      const { index: newIndex } = teleportDestinationVm.getUnderlyingVm(this.relatedElement)
-      teleportDestinationVm.spliceList(newIndex, 0, element)
+      const { index: newIndex } = teleportDestinationVm.getUnderlyingVm(relatedElement) || {}
+      if (newIndex !== undefined) {
+        teleportDestinationVm.spliceList(newIndex, 0, element)
+      }
     }
   }
 }
