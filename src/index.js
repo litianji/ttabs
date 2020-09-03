@@ -4,7 +4,7 @@ import TTabs from './tabs/tabs'
 import TTabPane from './tabs/tab-pane'
 import './style/index.scss'
 
-let components = {}
+const components = {}
 components.install = () => {
   [
     TTabs,

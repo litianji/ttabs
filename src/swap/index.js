@@ -2,7 +2,23 @@
 import { Sortable, Swap } from 'sortablejs/modular/sortable.core.esm'
 import { removeClass } from '../utils/dom'
 
-Sortable.mount(new Swap())
+let relatedElement = null
+
+// aop, override Swap drop method
+function SwapOverride () {
+  const SwapCls = Swap()
+  SwapCls.prototype._drop = SwapCls.prototype.drop
+  SwapCls.prototype.drop = function (evt) {
+    // const { activeSortable, putSortable, dragEl } = evt
+    // if (relatedElement) {
+    //   this._drop({ activeSortable, putSortable, dragEl })
+    // }
+    // do nothing
+  }
+  return SwapCls
+}
+
+Sortable.mount(new SwapOverride())
 
 function computeVmIndex (vnodes, element) {
   return vnodes.map(elt => elt.elm).indexOf(element)
@@ -61,7 +77,7 @@ const swapComponent = {
   },
 
   mounted () {
-    let { options, $attrs } = this
+    const { options, $attrs } = this
 
     this.noneFunctionalComponentMode = this.getTag().toLowerCase() !== this.$el.nodeName.toLowerCase()
 
@@ -71,7 +87,7 @@ const swapComponent = {
       )
     }
 
-    let eventOptions = eventsListened.reduce((res, name) => {
+    const eventOptions = eventsListened.reduce((res, name) => {
       res[`on${name}`] = (e) => {
         this[`on${name}`] && this[`on${name}`](e)
         this.$emit(`on${name}`, e)
@@ -86,11 +102,6 @@ const swapComponent = {
       ...eventOptions,
       ...$attrs
     })
-
-    if (!this.$attrs.disabled) {
-      window.$sortable = this.$sortable
-      console.log(this.$sortable)
-    }
   },
   beforeDestroy () {
     if (this.$sortable !== undefined) this.$sortable.destroy()
@@ -120,7 +131,7 @@ const swapComponent = {
     },
 
     swapList (newIndex, oldIndex, element) {
-      const list = [ ...this.value ]
+      const list = [...this.value]
       const t = list[newIndex]
       list[newIndex] = list[oldIndex]
       list[oldIndex] = t
@@ -134,13 +145,13 @@ const swapComponent = {
 
     onMove (evt) {
       if (evt.related) {
-        this.related = evt.related
+        relatedElement = evt.related
       }
     },
 
     onLeave (evt) {
-      removeClass(this.related, this.$attrs.swapClass)
-      this.related = null
+      removeClass(relatedElement, this.$attrs.swapClass)
+      relatedElement = null
     },
 
     onEnd (evt) {
@@ -154,7 +165,8 @@ const swapComponent = {
       if (newIndex >= this.getChildrenNodes().length || newIndex < 0) {
         return
       }
-      if (this.related === evt.swapItem) {
+      if (relatedElement === evt.swapItem) {
+        removeClass(relatedElement, this.$attrs.swapClass)
         this.swapList(newIndex, oldIndex, element)
       }
     }

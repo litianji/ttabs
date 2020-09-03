@@ -1,5 +1,5 @@
 <template>
-  <div class="t-scrollbar" @mousewheel="handleMousewheel">
+  <div class="t-scrollbar" v-mousewheel="handleMousewheel">
     <!-- 内容 -->
     <div
       ref="wrap"
@@ -23,10 +23,14 @@
 
 <script>
 import { addResizeListener, removeResizeListener } from '../utils/resize-event'
+import Mousewheel from '../directives/mousewheel'
 import ElBar from './bar'
 export default {
   name: 'TScrollbar',
-  components: {ElBar},
+  components: { ElBar },
+  directives: {
+    Mousewheel
+  },
   data () {
     return {
       scrollWidth: 17,
@@ -46,7 +50,7 @@ export default {
   },
   methods: {
     handleScroll (e) {
-      let wrap = this.$refs.wrap
+      const wrap = this.$refs.wrap
       this.moveY = ((wrap.scrollTop * 100) / wrap.clientHeight)
       this.moveX = ((wrap.scrollLeft * 100) / wrap.clientWidth)
 
@@ -55,12 +59,11 @@ export default {
     },
 
     update () {
-      let heightPercentage, widthPercentage
-      let wrap = this.$refs.wrap
+      const wrap = this.$refs.wrap
       if (!wrap) return
 
-      heightPercentage = (wrap.clientHeight * 100 / wrap.scrollHeight)
-      widthPercentage = (wrap.clientWidth * 100 / wrap.scrollWidth)
+      const heightPercentage = (wrap.clientHeight * 100 / wrap.scrollHeight)
+      const widthPercentage = (wrap.clientWidth * 100 / wrap.scrollWidth)
 
       this.sizeHeight = (heightPercentage < 100) ? (heightPercentage + '%') : ''
       this.sizeWidth = (widthPercentage < 100) ? (widthPercentage + '%') : ''
@@ -76,10 +79,13 @@ export default {
       })
     },
     handleMousewheel (e) {
-      if (!this.horizontalOnly) return
-      let { wheelDelta } = e
-      let { scrollLeft } = this.$refs.wrap
-      let px = 20 * wheelDelta / -120
+      if (!this.horizontalOnly || !this.sizeWidth) return
+
+      e.preventDefault()
+
+      const { wheelDelta } = e
+      const { scrollLeft } = this.$refs.wrap
+      const px = 20 * wheelDelta / -120
 
       let left = scrollLeft + px
 

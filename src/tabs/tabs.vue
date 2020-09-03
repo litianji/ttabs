@@ -27,10 +27,7 @@ import TTabNav from './tab-nav'
 import TSwapComponent from '../swap'
 export default {
   name: 'TTabs',
-  components: {TTabNav, TSwapComponent},
-  model: {
-    prop: 'activeName'
-  },
+  components: { TTabNav, TSwapComponent },
   props: {
     // nav位置
     tabPosition: {
@@ -39,7 +36,7 @@ export default {
     },
 
     // 当前选中
-    activeName: {
+    value: {
       type: String,
       default: ''
     },
@@ -58,7 +55,7 @@ export default {
   data () {
     return {
       panes: [],
-      currentName: this.activeName,
+      currentName: this.value,
 
       dragOptions: {
         disabled: true
@@ -94,12 +91,22 @@ export default {
     tabChange (panes) {
       this.panes = panes
       const tabList = panes.map(pane => {
-        if (this.listMap[pane.name]) {
-          return this.listMap[pane.name]
-        } else {
-          this.handleTabClick(pane, pane.name)
-          return pane.listItem
+        // 如果没有list则创建一个新的
+        if (!this.list || !this.list.length) {
+          return {
+            name: pane.name,
+            label: pane.label
+          }
         }
+
+        // 更新顺序
+        if (this.listMap && this.listMap[pane.name]) {
+          return this.listMap[pane.name]
+        }
+
+        // 新增选项卡并选中
+        this.handleTabClick(pane, pane.name)
+        return pane.listItem
       })
       this.$emit('update:list', tabList)
     }
@@ -107,7 +114,9 @@ export default {
   computed: {
     listMap () {
       return this.list.reduce((res, item) => {
-        res[item.name] = item
+        if (item) {
+          res[item.name] = item
+        }
         return res
       }, {})
     }

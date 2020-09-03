@@ -11,8 +11,8 @@
                 ref="tabs"
                 v-for="item in cPanes"
                 :key="item.name"
-                class="t-tab-nav__item dragable-item"
                 :id="`tab-item-${item.name}`"
+                class="t-tab-nav__item dragable-item"
                 @click="(e) => handleTabClick(item, item.name, e)">
                 <label-slot :label="item.$slots.label || item.label"></label-slot>
               </div>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
 import TTabBar from './tab-bar'
 import TScrollbar from '../scrollbar'
 import TSwapComponent from '../swap'
@@ -39,7 +38,6 @@ export default {
         return h('span', { class: 'inner' }, Array.isArray(this.label) ? this.label : [this.label])
       }
     },
-    draggable,
     TTabBar,
     TScrollbar,
     TSwapComponent
@@ -77,14 +75,14 @@ export default {
     },
     dragStart (e) {
       this.isDragging = true
-      let currentDrag = this.cPanes.find(item => `tab-item-${item.name}` === e.item.id)
+      const currentDrag = this.cPanes.find(item => `tab-item-${item.name}` === e.item.id)
       this.handleTabClick(currentDrag, currentDrag.name, e)
     },
     dragEnd (e) {
       this.isDragging = false
       // set active
       if (!this.cPanes.find(item => item.name === this.currentName)) {
-        let pane = this.cPanes[this.cPanes.length - 1]
+        const pane = this.cPanes[this.cPanes.length - 1]
         this.handleTabClick(pane, pane.name)
       }
     },

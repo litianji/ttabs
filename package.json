@@ -12,6 +12,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "normalize-wheel": "^1.0.1",
+    "resize-observer-polyfill": "^1.5.1",
+    "sortablejs": "^1.10.2",
     "vue": "^2.6.11"
   },
   "devDependencies": {
@@ -28,6 +31,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
+    "sass-loader": "^10.0.1",
+    "sass-node": "^4.11.2",
     "vue-template-compiler": "^2.6.11",
     "vuepress": "^1.5.4"
   },
