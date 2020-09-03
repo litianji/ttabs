@@ -1,15 +1,54 @@
----
-home: true
-heroImage: https://v1.vuepress.vuejs.org/hero.png
-tagline: 
-actionText: Quick Start →
-actionLink: /tabs/
-features:
-- title: Feature 1 Title
-  details: Feature 1 Description
-- title: Feature 2 Title
-  details: Feature 2 Description
-- title: Feature 3 Title
-  details: Feature 3 Description
-footer: Made by  with ❤️
----
+
+## 功能
++ tab页切换
++ 拖拽调整tab页顺序，响应式同步列表
+
+
+## 拖拽
+
+> 支持`.sync`, 绑定一个数组，同步更新
+
+<demo-base />
+
+## 滚动条
+
+> tab数量比较多时出现滚动条
+
+<demo-scroller />
+
+
+<!-- ```vue
+<template>
+  <div>
+    <t-tabs v-model="active" :list.sync="list1">
+      <t-tab-pane 
+        v-for="item in list1" 
+        :name="item.name" 
+        :label="item.label" 
+        :key="item.name">
+        <p>这是第{{item.index}}选项卡</p>
+      </t-tab-pane>
+    </t-tabs>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      active: 'tab2',
+      list1: []
+    }
+  },
+  created () {
+    for (let i = 0; i < 20; i++) {
+      this.list1.push({
+        index: i + 1,
+        name: 'tab' + (i + 1),
+        label: 'tab' + (i + 1)
+      })
+    }
+  }
+}
+</script>
+``` -->
