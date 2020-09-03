@@ -1,12 +1,14 @@
 {
   "name": "ttabs",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "a vue tabs component",
+  "files": ["src"],
+  "main": "src/index.js",
   "scripts": {
     "dev": "vuepress dev docs",
     "build:docs": "vuepress build docs",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --no-clean --target lib --formats commonjs --name ttabs src/index.js",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },

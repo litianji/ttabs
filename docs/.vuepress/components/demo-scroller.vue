@@ -1,11 +1,13 @@
 <template>
-  <div>
-    <t-tabs v-model="active" :list.sync="list1">
-      <t-tab-pane v-for="item in list1" :name="item.name" :label="item.label" :key="item.name">
-        <p>这是第{{item.index}}选项卡</p>
-      </t-tab-pane>
-    </t-tabs>
-  </div>
+  <t-tabs v-model="active" :list.sync="list1">
+    <t-tab-pane 
+      v-for="item in list1" 
+      :name="item.name" 
+      :label="item.label" 
+      :key="item.name">
+      <p>这是第{{item.index}}选项卡</p>
+    </t-tab-pane>
+  </t-tabs>
 </template>
 
 <script>
