@@ -80,11 +80,6 @@ export default {
     },
     dragEnd (e) {
       this.isDragging = false
-      // set active
-      if (!this.cPanes.find(item => item.name === this.currentName)) {
-        const pane = this.cPanes[this.cPanes.length - 1]
-        this.handleTabClick(pane, pane.name)
-      }
     },
     dragMove (e) {
       this.dragingRandom = e.originalEvent.timeStamp

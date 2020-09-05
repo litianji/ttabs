@@ -189,6 +189,8 @@ const swapComponent = {
       removeClass(relatedElement, this.$attrs.swapClass)
       relatedElement = null
       teleportDestinationVm = null
+
+      this.$emit('onLeave', evt)
     },
 
     onEnd (evt) {

@@ -91,6 +91,9 @@ export default {
     },
     tabChange (panes) {
       this.panes = panes
+
+      // update list & reset active tab
+      let isInList = false
       const tabList = panes.map(pane => {
         if (
           this.list &&
@@ -99,8 +102,23 @@ export default {
         ) {
           this.handleTabClick(pane, pane.name)
         }
+
+        if (pane.name === this.currentName) {
+          isInList = true
+        }
         return pane.__listItem
       })
+
+      if (this.list.length && !isInList) {
+        const oldIndex = this.list.findIndex(item => item.name === this.currentName)
+        const nextIndex = oldIndex === this.list.length - 1 ? oldIndex - 1 : oldIndex
+
+        if (nextIndex > -1) {
+          const pane = panes[nextIndex]
+          this.handleTabClick(pane, pane.name)
+        }
+      }
+
       this.$emit('update:list', tabList)
     }
   },
