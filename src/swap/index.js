@@ -205,6 +205,8 @@ const swapComponent = {
     onLeave (evt) {
       removeClass(relatedElement, this.$attrs.swapClass)
       relatedElement = null
+
+      this.removeMaskEvent()
       teleportDestinationVm = null
 
       this.$emit('onLeave', evt)
@@ -259,6 +261,9 @@ const swapComponent = {
         newIndex = this.realList.length - 1
 
         const maskVm = teleportDestinationVm._mask_vm_
+        // remove mask event
+        this.removeMaskEvent()
+
         if (maskVm) {
           maskVm.removeMask()
           if (maskVm.dragEndHandle && maskVm.dragEndHandle({ teleportDestinationVm, oldIndex, element, swapComponentVm: this }) === false) {
@@ -275,6 +280,13 @@ const swapComponent = {
       this.spliceList(oldIndex, 1)
       if (newIndex !== undefined) {
         teleportDestinationVm.spliceList(newIndex, 0, element)
+      }
+    },
+
+    removeMaskEvent () {
+      if (teleportDestinationVm) {
+        delete teleportDestinationVm._mask_vm_
+        delete teleportDestinationVm._mask_evt_
       }
     }
   }

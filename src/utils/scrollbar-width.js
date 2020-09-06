@@ -2,10 +2,9 @@ import Vue from 'vue'
 
 let scrollBarWidth
 
-export default function () {
-  console.log('here')
+export default function (isForce) {
   if (Vue.prototype.$isServer) return 0
-  if (scrollBarWidth !== undefined) return scrollBarWidth
+  if (scrollBarWidth !== undefined && !isForce) return scrollBarWidth
   const outer = document.createElement('div')
   outer.className = 'el-scrollbar__wrap'
   outer.style.visibility = 'hidden'

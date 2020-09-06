@@ -66,6 +66,7 @@ export default {
     },
 
     update () {
+      this.scrollWidth = scrollbarWidth(true)
       const wrap = this.$refs.wrap
       if (!wrap) return
 

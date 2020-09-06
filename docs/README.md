@@ -59,4 +59,3 @@ export default {
 ## 问题
 
 + :bug:选项卡没有拖过去，或者说以v-for的指令优先了
-+ vscode 风格hover效果

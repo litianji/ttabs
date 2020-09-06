@@ -1,6 +1,6 @@
 {
   "name": "ttabs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a vue tabs component",
   "author": "litianji",
   "repository":{
@@ -8,9 +8,10 @@
     "url": "https://github.com/litianji/ttabs.git"
   },
   "files": [
-    "src"
+    "src",
+    "lib"
   ],
-  "main": "src/index.js",
+  "main": "lib/ttabs.common.js",
   "scripts": {
     "dev": "vuepress dev docs",
     "build:docs": "vuepress build docs",
@@ -68,7 +69,8 @@
           "jest": true
         }
       }
-    ]
+    ],
+    "ignorePatterns": ["./lib"]
   },
   "browserslist": [
     "> 1%",
