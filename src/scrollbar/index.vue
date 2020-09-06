@@ -23,6 +23,7 @@
 
 <script>
 import { addResizeListener, removeResizeListener } from '../utils/resize-event'
+import scrollbarWidth from '../utils/scrollbar-width'
 import Mousewheel from '../directives/mousewheel'
 import ElBar from './bar'
 export default {
@@ -39,7 +40,7 @@ export default {
   },
   data () {
     return {
-      scrollWidth: 17,
+      scrollWidth: scrollbarWidth(),
       // x方向
       moveX: 0,
       // y方向

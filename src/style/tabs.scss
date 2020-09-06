@@ -35,13 +35,15 @@ $--header-border-color: #e4e7ed;
 @include b(tab-nav) {
   width: 100%;
   height: 100%;
-  margin-bottom: -1px;
-  @include utils-clearfix;
+  // margin-bottom: -1px;
+  text-align: left;
+  // @include utils-clearfix;
 
   // bfc
   .t-scrollbar__view{
     display: inline-block;
   }
+
 
   @include e(wrap) {
     position: relative;
