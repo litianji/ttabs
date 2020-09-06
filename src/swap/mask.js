@@ -5,8 +5,8 @@ import Vue from 'vue'
 
 const MASKCLASS = 't-swap__mask'
 export default {
-  name: 'TSWapMask',
-  componentName: 'TSWapMask',
+  name: 'TSwapMask',
+  componentName: 'TSwapMask',
   mixins: [emitter],
   props: {
     target: {
@@ -15,6 +15,9 @@ export default {
     inPath: {
       type: Boolean,
       default: false
+    },
+    dragEndHandle: {
+      type: Function
     }
   },
   data () {

@@ -8,8 +8,7 @@
       'dragable-item': true
     }"
     >
-      <t-swap-mask target="t-scrollbar__wrap"></t-swap-mask>
-      <t-swap-mask target="t-tabs__content" in-path></t-swap-mask>
+      <slot name="mask"></slot>
 
       <div class="t-tabs__header dragdisabled">
         <t-tab-nav
@@ -28,10 +27,9 @@
 <script>
 import TTabNav from './tab-nav'
 import TSwapComponent from '../swap'
-import TSwapMask from '../swap/mask'
 export default {
   name: 'TTabs',
-  components: { TTabNav, TSwapComponent, TSwapMask },
+  components: { TTabNav, TSwapComponent },
   props: {
 
     tabPosition: {

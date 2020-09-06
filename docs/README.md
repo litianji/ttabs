@@ -51,6 +51,11 @@ export default {
 </script>
 ```
 
+## 遮罩
+> 扩展的功能
+
+<demo-mask />
+
 ## 问题
 
 + :bug:选项卡没有拖过去，或者说以v-for的指令优先了

@@ -165,7 +165,7 @@ const swapComponent = {
         this.maskSlots = this.$slots.default.filter(vnode =>
           vnode.tag &&
           vnode.componentOptions &&
-          vnode.componentOptions.Ctor.options.name === 'TSWapMask')
+          vnode.componentOptions.Ctor.options.name === 'TSwapMask')
       }
     },
 
@@ -212,7 +212,7 @@ const swapComponent = {
 
     onOver (evt) {
       if (this.maskSlots && this.maskSlots.length) {
-        this.broadcast('TSWapMask', 'onMask', evt)
+        this.broadcast('TSwapMask', 'onMask', evt)
         this.broadcast('TSwapComponent', 'onMask', evt)
       }
     },
@@ -254,11 +254,17 @@ const swapComponent = {
 
       let { index: newIndex } = teleportDestinationVm.getUnderlyingVm(relatedElement) || {}
 
-      // handle mask end
+      // handle drag end in mask
       if (teleportDestinationVm._mask_evt_) {
         newIndex = this.realList.length - 1
 
-        teleportDestinationVm._mask_vm_.removeMask()
+        const maskVm = teleportDestinationVm._mask_vm_
+        if (maskVm) {
+          maskVm.removeMask()
+          if (maskVm.dragEndHandle && maskVm.dragEndHandle({ teleportDestinationVm, oldIndex, element, swapComponentVm: this }) === false) {
+            return
+          }
+        }
 
         if (teleportDestinationVm === this) {
           this.swapList(newIndex, oldIndex, element)
