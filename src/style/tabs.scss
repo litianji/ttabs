@@ -14,6 +14,7 @@ $--header-border-color: #e4e7ed;
   }
 
   @include e(content) {
+    position: relative;
     text-align: left;
     width: 100%;
   }
@@ -88,4 +89,24 @@ $--header-border-color: #e4e7ed;
   height: 2px;
   background: #fff;
   bottom: 0px;
+}
+
+
+.t-swap__mask {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  // padding-left: 1px;
+  // padding-bottom: 1px;
+  box-sizing: border-box;
+
+  &::after {
+    content: " ";
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background: transparentize($color: #000000, $amount: 0.97)
+  }
 }

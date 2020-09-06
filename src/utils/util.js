@@ -13,3 +13,15 @@ export const arrayFind = function (arr, pred) {
   const idx = arrayFindIndex(arr, pred)
   return idx !== -1 ? arr[idx] : undefined
 }
+
+export function rafThrottle (fn) {
+  let locked = false
+  return function (...args) {
+    if (locked) return
+    locked = true
+    window.requestAnimationFrame(_ => {
+      fn.apply(this, args)
+      locked = false
+    })
+  }
+}

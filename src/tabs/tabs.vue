@@ -8,7 +8,10 @@
       'dragable-item': true
     }"
     >
-      <div class="t-tabs__header">
+      <t-swap-mask target="t-scrollbar__wrap"></t-swap-mask>
+      <t-swap-mask target="t-tabs__content" in-path></t-swap-mask>
+
+      <div class="t-tabs__header dragdisabled">
         <t-tab-nav
           ref="nav"
           :currentName="currentName"
@@ -16,7 +19,7 @@
           @tab-change="tabChange">
         </t-tab-nav>
       </div>
-      <div class="t-tabs__content">
+      <div class="t-tabs__content dragdisabled">
         <slot></slot>
       </div>
   </t-swap-component>
@@ -25,9 +28,10 @@
 <script>
 import TTabNav from './tab-nav'
 import TSwapComponent from '../swap'
+import TSwapMask from '../swap/mask'
 export default {
   name: 'TTabs',
-  components: { TTabNav, TSwapComponent },
+  components: { TTabNav, TSwapComponent, TSwapMask },
   props: {
 
     tabPosition: {
@@ -56,8 +60,9 @@ export default {
       currentName: this.value,
 
       dragOptions: {
-        disabled: true
-        // filter: '.dragdisabled'
+        disabled: true,
+        group: 'nav',
+        filter: '.dragdisabled'
       }
     }
   },
@@ -84,6 +89,9 @@ export default {
       } else if (this.panes.length !== 0) {
         this.panes = []
       }
+    },
+    updateNav () {
+      this.$refs.nav && this.$refs.nav.$emit('set-navs', this.panes)
     },
     handleTabClick (tab, name, event) {
       this.currentName = name
@@ -134,7 +142,7 @@ export default {
   },
   mounted () {
     this.calcPaneInstances()
-    this.$refs.nav && this.$refs.nav.$emit('set-navs', this.panes)
+    this.updateNav()
   }
 
 }

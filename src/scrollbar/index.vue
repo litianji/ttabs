@@ -15,8 +15,8 @@
     </div>
 
     <!-- bar -->
-    <el-bar :move="this.moveX" :size="sizeWidth"></el-bar>
-    <el-bar :move="this.moveY" :size="sizeHeight" vertical></el-bar>
+    <el-bar :move="this.moveX" :size="sizeWidth" v-show="sizeWidth"></el-bar>
+    <el-bar :move="this.moveY" :size="sizeHeight" v-show="sizeHeight" vertical></el-bar>
   </div>
 
 </template>

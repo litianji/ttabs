@@ -23,17 +23,11 @@ export default {
   watch: {
     panes () {
       this.tabs = this.getTabs()
-    },
-    dragingRandom (val) {
-      this.tabs = this.getTabs()
     }
   },
   computed: {
     activeName () {
       return this.tabNav.currentName
-    },
-    dragingRandom () {
-      return this.tabNav.dragingRandom
     },
     barStyle () {
       const style = {}

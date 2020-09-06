@@ -1,11 +1,12 @@
 
 import { Sortable, Swap } from 'sortablejs/modular/sortable.core.esm'
 import { removeClass } from '../utils/dom'
+import emitter from '../mixins/emitter'
 
 let relatedElement = null
 let teleportDestinationVm = null
 
-// aop, override Swap drop method
+// aop, override Swap 'drop' method
 function SwapOverride () {
   const SwapCls = Swap()
   SwapCls.prototype._drop = SwapCls.prototype.drop
@@ -33,6 +34,8 @@ const eventsListened = ['Start', 'Add', 'Remove', 'Update', 'End', 'Move']
 
 const swapComponent = {
   name: 'TSwapComponent',
+  componentName: 'TSwapComponent',
+  mixins: [emitter],
   props: {
     list: {
       type: Array,
@@ -75,7 +78,8 @@ const swapComponent = {
     const attr = {
       ...this.$attrs,
       on: {
-        dragleave: this.onLeave
+        dragleave: this.onLeave,
+        dragover: this.onOver
       }
     }
     return h(this.tag, attr, slots)
@@ -100,6 +104,9 @@ const swapComponent = {
       return res
     }, {})
 
+    this.getMaskInstances()
+    this.$on('onMask', this.onMask)
+
     this.$sortable = !this.$sortable && new Sortable(this.rootContainer, {
       group: 'description',
       swap: true,
@@ -109,6 +116,7 @@ const swapComponent = {
     })
   },
   beforeDestroy () {
+    this.$off('onMask', this.onMask)
     if (this.$sortable !== undefined) this.$sortable.destroy()
   },
   methods: {
@@ -152,6 +160,15 @@ const swapComponent = {
       return vue.$parent
     },
 
+    getMaskInstances () {
+      if (this.$slots.default) {
+        this.maskSlots = this.$slots.default.filter(vnode =>
+          vnode.tag &&
+          vnode.componentOptions &&
+          vnode.componentOptions.Ctor.options.name === 'TSWapMask')
+      }
+    },
+
     swapList (newIndex, oldIndex, element) {
       const list = [...this.value]
       const t = list[newIndex]
@@ -193,6 +210,20 @@ const swapComponent = {
       this.$emit('onLeave', evt)
     },
 
+    onOver (evt) {
+      if (this.maskSlots && this.maskSlots.length) {
+        this.broadcast('TSWapMask', 'onMask', evt)
+        this.broadcast('TSwapComponent', 'onMask', evt)
+      }
+    },
+
+    onMask (e) {
+      const { __vue__: vue } = e.srcElement
+      teleportDestinationVm = this
+      teleportDestinationVm._mask_evt_ = true
+      teleportDestinationVm._mask_vm_ = vue && vue.mask_vm
+    },
+
     onEnd (evt) {
       const element = evt.item._underlying_vm_
       if (element === undefined) {
@@ -205,7 +236,7 @@ const swapComponent = {
 
       removeClass(relatedElement, this.$attrs.swapClass)
 
-      if (newIndex === -1) {
+      if (teleportDestinationVm) {
         this.teleport(oldIndex, element)
         return
       }
@@ -221,8 +252,21 @@ const swapComponent = {
         return
       }
 
+      let { index: newIndex } = teleportDestinationVm.getUnderlyingVm(relatedElement) || {}
+
+      // handle mask end
+      if (teleportDestinationVm._mask_evt_) {
+        newIndex = this.realList.length - 1
+
+        teleportDestinationVm._mask_vm_.removeMask()
+
+        if (teleportDestinationVm === this) {
+          this.swapList(newIndex, oldIndex, element)
+          return
+        }
+      }
+
       this.spliceList(oldIndex, 1)
-      const { index: newIndex } = teleportDestinationVm.getUnderlyingVm(relatedElement) || {}
       if (newIndex !== undefined) {
         teleportDestinationVm.spliceList(newIndex, 0, element)
       }

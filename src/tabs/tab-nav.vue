@@ -58,12 +58,11 @@ export default {
       dragOptions: {
         swap: true,
         animation: 0,
-        group: 'description',
+        group: 'nav',
         disabled: false,
         swapClass: 'ghost'
       },
-      isDragging: false,
-      dragingRandom: 0
+      isDragging: false
     }
   },
   methods: {
@@ -80,12 +79,6 @@ export default {
     },
     dragEnd (e) {
       this.isDragging = false
-    },
-    dragMove (e) {
-      this.dragingRandom = e.originalEvent.timeStamp
-    },
-    dragLeave (e) {
-      console.log(e)
     }
   },
   created () {
