@@ -1,6 +1,6 @@
 # ttabs
 
-> 一个可以拖拽交换tab也位置的基于vue2的tab页组件
+> 一个可以拖拽交换tab页位置的基于vue2的tab页组件
 
 ## doc
 https://litianji.github.io/ttabs/
