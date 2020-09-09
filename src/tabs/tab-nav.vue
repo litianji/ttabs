@@ -13,7 +13,8 @@
                 :key="item.name"
                 :id="`tab-item-${item.name}`"
                 class="t-tab-nav__item dragable-item"
-                @click="(e) => handleTabClick(item, item.name, e)">
+                @click="(e) => handleTabClick(item, item.name, e)"
+                @mousedown="(e) => handleTabClick(item, item.name, e)">
                 <label-slot :label="item.$slots.label || item.label"></label-slot>
               </div>
           </t-swap-component>
@@ -74,8 +75,6 @@ export default {
     },
     dragStart (e) {
       this.isDragging = true
-      const currentDrag = this.cPanes.find(item => `tab-item-${item.name}` === e.item.id)
-      this.handleTabClick(currentDrag, currentDrag.name, e)
     },
     dragEnd (e) {
       this.isDragging = false

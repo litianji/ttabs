@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { removeClass, addClass } from '../utils/dom'
 export default {
   name: 'TTabBar',
   props: ['panes'],
@@ -18,6 +19,12 @@ export default {
         return []
       }
       return [...this.tabNav.$el.querySelectorAll('.dragable-item')]
+    },
+    setAvtiveCls (tab) {
+      this.tabs.forEach(tab => {
+        removeClass(tab, 'is-active')
+      })
+      addClass(tab, 'is-active')
     }
   },
   watch: {
@@ -34,6 +41,7 @@ export default {
       let offset = 0
       let tabSize = 0
       let borderWidth = 0
+      let activeTab = null
 
       this.tabs && this.tabs.every((tab, index) => {
         const active = tab.id.replace('tab-item-', '') === this.activeName
@@ -44,10 +52,13 @@ export default {
         if (!active) {
           offset += tabSize
           return true
+        } else {
+          activeTab = tab
         }
 
         return false
       })
+      this.setAvtiveCls(activeTab)
       const transform = `translateX(${offset}px)`
       style.width = tabSize + 'px'
       style.transform = transform

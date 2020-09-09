@@ -15,3 +15,15 @@
     </t-tab-pane>
   </t-tabs>
 ```
+
+## Install
+```bash
+ npm i ttabs --save
+```
+
+## Import 
+```js
+ import TTabs from 'ttabs'
+ import 'ttabs/lib/ttabs.css'
+ Vue.use(TTabs)
+```
