@@ -1,6 +1,9 @@
 # ttabs
 
-> a vue tabs component
+> 一个可以拖拽交换tab也位置的基于vue2的tab页组件
+
+## doc
+https://litianji.github.io/ttabs/
 
 ```vue
   <t-tabs v-model="active" :list.sync="list">
@@ -14,4 +17,16 @@
       <p>tab3</p>
     </t-tab-pane>
   </t-tabs>
+```
+
+## Install
+```bash
+ npm i ttabs --save
+```
+
+## Import 
+```js
+ import TTabs from 'ttabs'
+ import 'ttabs/lib/ttabs.css'
+ Vue.use(TTabs)
 ```

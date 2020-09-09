@@ -1,22 +1,27 @@
 
-## 功能
-+ tab页切换
-+ 拖拽调整tab页顺序，响应式同步列表
+## 安装
+```bash
+ npm i ttabs --save
+```
 
+## 全局引入 
+```js
+ import TTabs from 'ttabs'
+ import 'ttabs/lib/ttabs.css'
+ Vue.use(TTabs)
+```
 
-## 选项卡
+## 基本使用
 
-> 支持`.sync`, 绑定一个数组，同步更新
+> 拖拽交换位置，支持`.sync`，同步更新
 
 <demo-base />
-
-## 滚动条
 
 > tab数量比较多时出现滚动条
 
 <demo-scroller />
 
-
+::: details 代码
 ```vue
 <template>
   <t-tabs v-model="active" :list.sync="list1">
@@ -50,12 +55,9 @@ export default {
 }
 </script>
 ```
+:::
 
-## 遮罩
-> 扩展的功能
+## slot
+> 遮罩
 
 <demo-mask />
-
-## 问题
-
-+ :bug:选项卡没有拖过去，或者说以v-for的指令优先了

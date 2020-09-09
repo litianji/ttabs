@@ -14,7 +14,7 @@
   "main": "lib/ttabs.common.js",
   "scripts": {
     "dev": "vuepress dev docs",
-    "build:docs": "vuepress build docs",
+    "docs:build": "vuepress build docs",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --no-clean --target lib --formats commonjs --name ttabs src/index.js",
     "test:unit": "vue-cli-service test:unit",
