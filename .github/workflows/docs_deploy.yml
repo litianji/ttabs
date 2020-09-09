@@ -23,6 +23,7 @@ jobs:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
+        repo-token: ca9b7bf1d6bfe685e484f1efcb337d381376a542
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: sh deploy.sh
