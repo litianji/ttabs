@@ -24,6 +24,7 @@ jobs:
         publish_branch: gh-pages
         publish_dir: ./docs/.vuepress/dist
     - name: publish
+      uses: actions/checkout@v2
       with:
         registry-url: https://registry.npmjs.org/
       run: npm publish
