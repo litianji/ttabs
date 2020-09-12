@@ -23,10 +23,9 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages
         publish_dir: ./docs/.vuepress/dist
-    - name: publish
-      uses: actions/checkout@v2
-      with:
-        registry-url: https://registry.npmjs.org/
-      run: npm publish
+    
+    - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      with:
+        registry-url: https://registry.npmjs.org/
