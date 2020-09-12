@@ -1,7 +1,7 @@
 {
   "name": "ttabs",
-  "version": "1.0.1",
-  "description": "a vue tabs component",
+  "version": "1.0.2",
+  "description": "a vue draggable tabs component",
   "author": "litianji",
   "repository":{
     "type": "git",
