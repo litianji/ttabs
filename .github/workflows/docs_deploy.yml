@@ -15,11 +15,13 @@ jobs:
       with:
         node-version: 10
         registry-url: https://registry.npmjs.org/
-    - run: npm publish
+    - run: |
+      npm run build
+      npm publish
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       
-    - name: yarn install, build
+    - name: yarn install, docs:build
       run: |
         yarn install
         yarn docs:build
