@@ -10,23 +10,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      
+    - uses: actions/checkout@v2   
     - name: yarn install, build
       run: |
         yarn install
+        yarn build
         yarn docs:build
-        
-    - name: Deploy
+         
+    - name: deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages
         publish_dir: ./docs/.vuepress/dist
+    
     - name: publish
-      uses: actions/checkout@v2
+      uses: actions/setup-node@v1
       with:
+        node-version: 10
         registry-url: https://registry.npmjs.org/
-      run: npm publish
+    - run:
+        npm publish
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
