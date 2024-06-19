@@ -64,6 +64,7 @@ $--header-border-color: #e4e7ed;
     line-height: $--header-height;
     border: 1px solid $--header-border-color;
     cursor: pointer;
+    margin-bottom: 1px;
 
     &> span {
       box-sizing: border-box;
