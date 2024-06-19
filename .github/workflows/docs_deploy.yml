@@ -19,16 +19,17 @@ jobs:
     - name: deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
+        node-version: 18
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages
         publish_dir: ./docs/.vuepress/dist
     
-    - name: publish
-      uses: actions/setup-node@v1
-      with:
-        node-version: 20
-        registry-url: https://registry.npmjs.org/
-    - run:
-        npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+    # - name: publish
+    #   uses: actions/setup-node@v1
+    #   with:
+    #     node-version: 20
+    #     registry-url: https://registry.npmjs.org/
+    # - run:
+    #     npm publish
+    #   env:
+    #     NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
