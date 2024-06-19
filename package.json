@@ -3,7 +3,7 @@
   "version": "1.0.5",
   "description": "a vue draggable tabs component",
   "author": "litianji",
-  "repository":{
+  "repository": {
     "type": "git",
     "url": "https://github.com/litianji/ttabs.git"
   },
@@ -41,10 +41,14 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
-    "sass-loader": "^10.0.1",
     "node-sass": "^9.0.0",
+    "sass-loader": "^10.0.1",
     "vue-template-compiler": "^2.6.11",
+    "terser-webpack-plugin": "4.2.3",
     "vuepress": "^1.5.4"
+  },
+  "resolutions": {
+    "terser-webpack-plugin": "4.2.3"
   },
   "eslintConfig": {
     "root": true,
@@ -70,7 +74,9 @@
         }
       }
     ],
-    "ignorePatterns": ["./lib"]
+    "ignorePatterns": [
+      "./lib"
+    ]
   },
   "browserslist": [
     "> 1%",
