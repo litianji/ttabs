@@ -27,7 +27,7 @@ jobs:
     - name: publish
       uses: actions/setup-node@v1
       with:
-        node-version: 10
+        node-version: 20
         registry-url: https://registry.npmjs.org/
     - run:
         npm publish
